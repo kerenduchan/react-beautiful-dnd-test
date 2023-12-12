@@ -1,9 +1,18 @@
 export const boardService = {
     getData,
     moveTask,
+    moveGroup,
 }
 
 function getData() {
+    return _data
+}
+
+function moveGroup(groupId, sourceIndex, targetIndex) {
+    const groupIdsToUpdate = [..._data.board.groupIds]
+    groupIdsToUpdate.splice(sourceIndex, 1)
+    groupIdsToUpdate.splice(targetIndex, 0, groupId)
+    _data = { ..._data, board: { ..._data.board, groupIds: groupIdsToUpdate } }
     return _data
 }
 

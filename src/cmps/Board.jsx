@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { boardService } from '../services/board.service'
 import { Group } from './Group'
 
@@ -10,7 +10,7 @@ export function Board() {
 
     function onDragUpdate() {}
     function onDragEnd(result) {
-        const { destination, source, draggableId } = result
+        const { destination, source, draggableId, type } = result
         if (!destination) {
             return
         }
@@ -22,14 +22,23 @@ export function Board() {
             return
         }
 
-        const newData = boardService.moveTask(
-            draggableId,
-            source.droppableId,
-            source.index,
-            destination.droppableId,
-            destination.index
-        )
-        setData(newData)
+        if (type === 'group') {
+            const newData = boardService.moveGroup(
+                draggableId,
+                source.index,
+                destination.index
+            )
+            setData(newData)
+        } else if (type === 'task') {
+            const newData = boardService.moveTask(
+                draggableId,
+                source.droppableId,
+                source.index,
+                destination.droppableId,
+                destination.index
+            )
+            setData(newData)
+        }
     }
 
     return (
@@ -38,17 +47,27 @@ export function Board() {
             onDragUpdate={onDragUpdate}
             onDragEnd={onDragEnd}
         >
-            <div className="board">
-                {data.board.groupIds.map((gId) => (
-                    <Group
-                        key={gId}
-                        group={data.groups[gId]}
-                        tasks={data.groups[gId].taskIds.map(
-                            (tId) => data.tasks[tId]
-                        )}
-                    />
-                ))}
-            </div>
+            <Droppable droppableId="board" direction="horizontal" type="group">
+                {(provided) => (
+                    <div
+                        className="board"
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                    >
+                        {data.board.groupIds.map((gId, index) => (
+                            <Group
+                                key={gId}
+                                group={data.groups[gId]}
+                                index={index}
+                                tasks={data.groups[gId].taskIds.map(
+                                    (tId) => data.tasks[tId]
+                                )}
+                            />
+                        ))}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
         </DragDropContext>
     )
 }
