@@ -8,21 +8,28 @@ body {
 
 .group {
     width: 300px;
-    padding: 12px;
     background-color: rgb(196, 196, 196);
     border-radius: 8px;
     margin-inline-end: 12px;
 }
 
 .group > .title {
-    padding-bottom: 10px;
+    padding-inline-start: 12px;
+    padding-inline-end: 12px;
+    padding-top: 12px;
+    padding-bottom: 6px;
     font-weight: 600;
     font-size: 16px;
 }
 
-.group > .tasks {
+.group > .task-list {
+    padding: 12px;
     display: flex;
     flex-direction: column;
+}
+
+.task-list.dragging-over {
+    background-color: skyblue;
 }
 
 .task {
