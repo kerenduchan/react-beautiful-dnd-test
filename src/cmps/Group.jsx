@@ -1,28 +1,26 @@
-import { TaskList } from './TaskList'
 import { Task } from './Task'
 import { Droppable } from 'react-beautiful-dnd'
 
 export function Group({ group, tasks }) {
     return (
-        <div className="group">
-            <div className="title">{group.title}</div>
-
-            <Droppable droppableId={group.id}>
-                {(provided, snapshot) => (
-                    <TaskList
-                        className={
-                            snapshot.isDraggingOver ? 'dragging-over' : ''
-                        }
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                    >
+        <Droppable droppableId={group.id}>
+            {(provided, snapshot) => (
+                <div
+                    className={`group ${
+                        snapshot.isDraggingOver ? 'dragging-over' : ''
+                    }`}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                >
+                    <div className="title">{group.title}</div>
+                    <div className="task-list">
                         {tasks.map((task, index) => (
                             <Task key={task.id} index={index} task={task} />
                         ))}
                         {provided.placeholder}
-                    </TaskList>
-                )}
-            </Droppable>
-        </div>
+                    </div>
+                </div>
+            )}
+        </Droppable>
     )
 }

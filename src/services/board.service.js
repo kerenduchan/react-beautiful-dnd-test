@@ -14,23 +14,26 @@ function moveTask(
     targetGroupId,
     targetIndex
 ) {
-    // for now, source group and target group are the same
-    const group = _data.groups[targetGroupId]
-    const newTaskIds = [...group.taskIds]
-    newTaskIds.splice(sourceIndex, 1)
-    newTaskIds.splice(targetIndex, 0, taskId)
-
-    const newGroup = { ...group, taskIds: newTaskIds }
-
-    _data = {
-        ..._data,
-        groups: {
-            ..._data.groups,
-            [newGroup.id]: newGroup,
-        },
-    }
-
+    _cutTask(taskId, sourceGroupId)
+    _pasteTask(taskId, targetGroupId, targetIndex)
     return _data
+}
+
+function _cutTask(taskId, groupId) {
+    const group = { ..._data.groups[groupId] }
+    group.taskIds = group.taskIds.filter((tId) => tId !== taskId)
+    _updateGroup(group)
+}
+
+function _pasteTask(taskId, groupId, index) {
+    const group = { ..._data.groups[groupId] }
+    group.taskIds = [...group.taskIds]
+    group.taskIds.splice(index, 0, taskId)
+    _updateGroup(group)
+}
+
+function _updateGroup(group) {
+    _data = { ..._data, groups: { ..._data.groups, [group.id]: group } }
 }
 
 let _data = {
