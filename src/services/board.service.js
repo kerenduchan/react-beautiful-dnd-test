@@ -46,10 +46,11 @@ let _data = {
 
     groups: {
         g1: { id: 'g1', title: 'To do', taskIds: ['t1', 't2', 't3', 't4'] },
-        g2: { id: 'g2', title: 'Done', taskIds: [] },
+        g2: { id: 'g2', title: 'In progress', taskIds: [] },
+        g3: { id: 'g3', title: 'Done', taskIds: [] },
     },
 
     board: {
-        groupIds: ['g1', 'g2'],
+        groupIds: ['g1', 'g2', 'g3'],
     },
 }

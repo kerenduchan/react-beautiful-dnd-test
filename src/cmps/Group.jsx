@@ -9,11 +9,13 @@ export function Group({ group, tasks }) {
                     className={`group ${
                         snapshot.isDraggingOver ? 'dragging-over' : ''
                     }`}
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
                 >
                     <div className="title">{group.title}</div>
-                    <div className="task-list">
+                    <div
+                        className="task-list"
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                    >
                         {tasks.map((task, index) => (
                             <Task key={task.id} index={index} task={task} />
                         ))}
